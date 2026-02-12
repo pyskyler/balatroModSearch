@@ -8,6 +8,8 @@
 <link href="DataTables/datatables.min.css" rel="stylesheet">
 
 <script src="DataTables/datatables.min.js"></script>
+<script type="module" src="https://md-block.verou.me/md-block.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@corgras/readmore-js/readmore.min.js" defer></script>
 
 <body>
 
@@ -15,8 +17,8 @@
     <thead>
     <tr>
         <th>title</th>
-        <th>steamodded</th>
-        <th>talisman</th>
+        <th>requires steamodded</th>
+        <th>requires talisman</th>
         <th>categories</th>
         <th>author</th>
         <th>repo</th>
@@ -28,8 +30,8 @@
     <tfoot>
     <tr>
         <th>title</th>
-        <th>steamodded</th>
-        <th>talisman</th>
+        <th>requires steamodded</th>
+        <th>requires talisman</th>
         <th>categories</th>
         <th>author</th>
         <th>repo</th>
@@ -39,8 +41,10 @@
     </tr>
     </tfoot>
 </table>
+
 <script>
     new DataTable('#example', {
+        fixedHeader: true,
         ajax: {
             url: 'mod_list.json',
             dataSrc: 'mods'},
@@ -59,7 +63,7 @@
                             return data;
                         }
                     }
-            }},
+            }, searchable: false},
             { data: 'requires-talisman',
                 render: function (data, type) {
                     if (type === 'display') {
@@ -73,7 +77,7 @@
                             return data;
                         }
                     }
-                }},
+                }, searchable: false},
             { data: 'categories.[, ]'},
             { data: 'author'},
             { data: 'repo',
@@ -83,7 +87,7 @@
                     }
 
                     return data;
-                }},
+                }, searchable: false},
             { data: 'downloadURL',
                 render: function (data, type) {
                     if (type === 'display') {
@@ -91,11 +95,135 @@
                     }
 
                     return data;
-                }},
-            { data: 'version'},
-            { data: 'description'}
-            ]
+                }, searchable: false},
+            { data: 'version', searchable: false},
+            { data: 'description',
+                render: function (data, type) {
+                    if (type === 'display') {
+                        return '<div class="readmore"><md-block >'+ data +'</md-block></div>';
+                    }
+                }
+            }
+            ],
+        layout: {
+            topStart: {
+                buttons: [
+                    {
+                        text: 'API',
+                        action: function (e, dt, node, config) {
+
+                            if (this.active() === false) {
+                                this.active(true)
+                                filterCategories(dt, "API")
+                            } else {
+                                this.active(false)
+                                filterCategoriesRemove(dt, "API")
+                            }
+                        }
+                    },
+                    {
+                        text: 'Content',
+                        action: function (e, dt, node, config) {
+
+                            if (this.active() === false) {
+                                this.active(true)
+                                filterCategories(dt, "Content")
+                            } else {
+                                this.active(false)
+                                filterCategoriesRemove(dt, "Content")
+                            }
+                        }
+                    },
+                    {
+                        text: 'Joker',
+                        action: function (e, dt, node, config) {
+
+                            if (this.active() === false) {
+                                this.active(true)
+                                filterCategories(dt, "Joker")
+                            } else {
+                                this.active(false)
+                                filterCategoriesRemove(dt, "Joker")
+                            }
+                        }
+                    },
+                    {
+                        text: 'Miscellaneous',
+                        action: function (e, dt, node, config) {
+
+                            if (this.active() === false) {
+                                this.active(true)
+                                filterCategories(dt, "Miscellaneous")
+                            } else {
+                                this.active(false)
+                                filterCategoriesRemove(dt, "Miscellaneous")
+                            }
+                        }
+                    },
+                    {
+                        text: 'Quality of Life',
+                        action: function (e, dt, node, config) {
+
+                            if (this.active() === false) {
+                                this.active(true)
+                                filterCategories(dt, "Quality of Life")
+                            } else {
+                                this.active(false)
+                                filterCategoriesRemove(dt, "Quality of Life")
+                            }
+                        }
+                    },
+                    {
+                        text: 'Resource Packs',
+                        action: function (e, dt, node, config) {
+
+                            if (this.active() === false) {
+                                this.active(true)
+                                filterCategories(dt, "Resource Packs")
+                            } else {
+                                this.active(false)
+                                filterCategoriesRemove(dt, "Resource Packs")
+                            }
+                        }
+                    },
+                    {
+                        text: 'Technical',
+                        action: function (e, dt, node, config) {
+
+                            if (this.active() === false) {
+                                this.active(true)
+                                filterCategories(dt, "Technical")
+                            } else {
+                                this.active(false)
+                                filterCategoriesRemove(dt, "Technical")
+                            }
+                        }
+                    }
+                ]
+            }
+        }
     })
+
+    var filteredCategories = []
+
+    function filterCategories(table, category) {
+        filteredCategories.push('"'+category+'"');
+        table.columns('categories:title').search(filteredCategories.join(" ")).draw()
+    }
+
+    function filterCategoriesRemove(table, category) {
+        filteredCategories.pop('"'+category+'"');
+        table.columns('categories:title').search(filteredCategories.join(" ")).draw()
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initReadMore('.readmore', {
+            collapsedHeight: 150,	// Height of the collapsed block in pixels
+            speed: 400,				// Animation duration in milliseconds
+            moreLink: '<span>Read More</span>',	// Expand button text
+            lessLink: '<span>Collapse</span>'	// Collapse button text
+        });
+    });
 </script>
 </body>
 </html>
