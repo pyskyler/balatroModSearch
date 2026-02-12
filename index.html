@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<link href="DataTables/datatables.min.css" rel="stylesheet">
+
+<script src="DataTables/datatables.min.js"></script>
+
+<body>
+
+<table id="example" class="display">
+    <thead>
+    <tr>
+        <th>title</th>
+        <th>steamodded</th>
+        <th>talisman</th>
+        <th>categories</th>
+        <th>author</th>
+        <th>repo</th>
+        <th>download url</th>
+        <th>version</th>
+        <th>description</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>title</th>
+        <th>steamodded</th>
+        <th>talisman</th>
+        <th>categories</th>
+        <th>author</th>
+        <th>repo</th>
+        <th>download url</th>
+        <th>version</th>
+        <th>description</th>
+    </tr>
+    </tfoot>
+</table>
+<script>
+    new DataTable('#example', {
+        ajax: {
+            url: 'mod_list.json',
+            dataSrc: 'mods'},
+        columns: [
+            { data: 'title'},
+            { data: 'requires-steamodded',
+                render: function (data, type) {
+                    if (type === 'display') {
+                        if (data === true) {
+                            return '&#9989';
+                        }
+                        if (data === false) {
+                            return ' ';
+                        }
+                        else {
+                            return data;
+                        }
+                    }
+            }},
+            { data: 'requires-talisman',
+                render: function (data, type) {
+                    if (type === 'display') {
+                        if (data === true) {
+                            return '&#9989';
+                        }
+                        if (data === false) {
+                            return ' ';
+                        }
+                        else {
+                            return data;
+                        }
+                    }
+                }},
+            { data: 'categories.[, ]'},
+            { data: 'author'},
+            { data: 'repo',
+                render: function (data, type) {
+                    if (type === 'display') {
+                        return '<a href="' + data + '">Link</a>';
+                    }
+
+                    return data;
+                }},
+            { data: 'downloadURL',
+                render: function (data, type) {
+                    if (type === 'display') {
+                        return '<a href="' + data + '">Download</a>';
+                    }
+
+                    return data;
+                }},
+            { data: 'version'},
+            { data: 'description'}
+            ]
+    })
+</script>
+</body>
+</html>
