@@ -4,5 +4,7 @@
     <content url="file://$MODULE_DIR$/../balatroModSearch" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="easy-read-more-button" level="application" />
+    <orderEntry type="library" name="@corgras/readmore-js" level="application" />
   </component>
 </module>
